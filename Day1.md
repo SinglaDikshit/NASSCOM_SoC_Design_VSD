@@ -185,7 +185,7 @@ This is the merged.lef file. At this stage if we check results and reports direc
 
 ![machine_concept](images/tmp_mergerd_lef.png)
 
-![machine_concept](images/tmp_file_and_syhtn.png)
+![machine_ept](images/tmp_file_and_syhtn.png)
 
 Runs folder also contain cmds.log and config.tcl file which are shown below.
 
