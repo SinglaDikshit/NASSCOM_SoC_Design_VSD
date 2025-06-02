@@ -179,13 +179,13 @@ Below you can see the Docker commands. I am running an interactive flow using `.
 
 ![machine_concept](images/docker_initiation.png)
 
-![machine_concept](images/after_runs_command3.png)
+![machine_concept](images/after_runs_comand3.png)
 
 This is the merged.lef file. At this stage if we check results and reports directories they will be empty but only tmp file will contain files. We can see in the image down the merged.lef.
 
-![machine_concept](images/tmp_merged_lef.png)
+![machine_concept](images/tmp_mergerd_lef.png)
 
-![machine_concept](images/tmp_file_and_synth.png)
+![machine_concept](images/tmp_file_and_syhtn.png)
 
 Runs folder also contain cmds.log and config.tcl file which are shown below.
 
