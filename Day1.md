@@ -223,6 +223,9 @@ FLIP FLOP RATIO = 10.843 %
 
 ![machine_concept](images/ff_ratio.png)
 
+We can also observe the chip area.
+![SoC_layout](images/chipareasynthesis.png)
+
 
 
 
