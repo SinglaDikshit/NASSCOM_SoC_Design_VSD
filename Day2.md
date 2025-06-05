@@ -180,6 +180,29 @@ Standard cells like AND, OR, and BUFFER gates are stored in the standard cell li
 
  ![SoC_layout](images/cell.png)
 
+ ### Typical Characterization Flow
+ 
+The standard cell characterization process involves the following steps:
+
+1. Reading SPICE model files containing device-level parameters.
+
+2. Importing the netlist extracted from SPICE simulations.
+
+3. Identifying buffer behavior to understand drive strength and signal propagation.
+
+4. Parsing subcircuits defined in the SPICE hierarchy.
+
+5. Connecting required power supplies (VDD and GND) to the circuit.
+
+6. Applying input stimulus to simulate switching activity.
+
+7. Adding appropriate output load capacitance to mimic real usage conditions.
+
+8. Defining simulation control commands (e.g., transient or DC analysis).
+
+These steps are specified in a configuration file, which is fed into the characterization tool, typically GUNA. The tool performs simulations and generates timing, power, and noise models, which are output in the form of .lib (Liberty) files.
+
+
  ## General Timing Characterisation Parameters
 
  We will take this circuit as an example-
