@@ -257,23 +257,108 @@ This 16-mask CMOS process ensures high performance, integration density, and sca
 
 ![ifvsgrfe](images/16mask.png)
 
-## Lab Introduction to Magic Tool Options and DRC Rules
+## Lab Introduction to Magic Tool Options and DRC Rules by Tim Edward
 
 Link to Google_Skywaters Design Rules: - [https://skywater-pdk.readthedocs.io/en/main/rules/periphery.html](URL)
 
 For reference , we can use the github repo of Google-Skywater: - [https://github.com/google/skywater-pdk](URL)
 
+One can read here also : - [https://opencircuitdesign.com/magic](URL)
+Specefically section 2,6 of magic tutrial was mentioned.
 
+for the lab we need to download the lab files, which can be done through this command -: `wget http://opencircuitdesign.com/open_pdks/archive/drc_tests.tgz`
 
+rest of the commands can be seen in the picture. 
 
+![ifvsgrfe](images/terminal.png)
 
+Content of .magicrc file by using command `vi .magicrc`
 
+![ifvsgrfe](images/magicrc.png)
 
+Open the met3.mag file from the file menu. we will see different layouts with different DRC values, called rule numbers.
 
+![ifvsgrfe](images/why.png)
+one can also the answer of why for the selected part
 
+These rule number we can found at Google-Skywater documentation.
 
+![ifvsgrfe](images/metal3.png)
 
+Now, I selected some area and painted and placed pads (black squares) using the commands seen in picture.
 
+![ifvsgrfe](images/pad-making.png)
 
+### Lab exercise to fix poly.9 error in Sky130 tech-file
 
+Now, we will open the poly.mag file in the magic tool with the helo of the command load poly.mag in the tkcon terminal.
+
+![ifvsgrfe](images/poly.png)
+
+Now consider the rule poly.9 then check the website for that particular rule. 
+
+In the pic, you can observe i did what for this and what i got. Also at the bottom the poly.9 rule can be observed.
+![ifvsgrfe](images/poly9.png)
+
+Firstly, open the sky130A.tech file from the directory drc_tests. The rules included for poly.9 are only for the spacing between the n-poly and p-poly resistor with diffusion. So, we will now add new rules for the spacing between the poly resistor with poly non-resistor.
+
+First one is the rule for the spacing between the p-poly resistor with poly non-resistor.
+
+![ifvsgrfe](images/change2.png)
+
+Second one is the rule for spacing between n-poly resistor with poly non-resistor. 
+
+![ifvsgrfe](images/change1.png)
+
+The allpolynonres is a macro under alias section of techfile
+
+![ifvsgrfe](images/chnage3.png)
+
+After making changes to the sky130A.tech file, type `:wq!` to Save and close the editor file.
+
+Next, execute the command `tech load sky130A.tech` in the tkcon terminal. Then, run the drc check as shown below. Here the patch dots show trhe error area.
+
+![ifvsgrfe](images/error.png)
+
+To check for errors, we can make a copy of the poly.9 model from the poly.mag file in the magic window.
+
+![ifvsgrfe](images/newpaint.png)
+
+then load tech file and select them to do DRC check.
+
+![ifvsgrfe](images/newdrc.png)
+
+To find the description of a DRC error, we can select the area with the error in the magic window and then run the command `drc why` in the tkcon terminal.
+
+![ifvsgrfe](images/width.png)
+In the above pic, we see an error which we can fix by modifying the tech file by not including only the spacing between npolyres with N-substrate diffusion in poly.9 but also between npolyres and all types of diffusion.
+
+## Lab challenge exercise to describe DRC error as geometrical construct
+
+![ifvsgrfe](images/nwellps.png)
+
+Now we will make some changes in sky130A.tech file which are as follows:
+
+![ifvsgrfe](images/change4.png)
+under Nwell section cifmaxwidth statement was added.
+![ifvsgrfe](images/change5.png)
+templayer nwell_tapped and nwell_untapped was added.
+![ifvsgrfe](images/change6.png)
+variant and cifmax was added.
+
+Now we will open the magic tool and execute the commands drc style drc(full) and drc check.
+
+![ifvsgrfe](images/nwell4.png)
+
+To find the nwell.6 model error, open the nwell.mag file in the magic tool. In the figure, the deep nwell is shown in yellow stripes and the nwell is shown in dotted green pattern.
+
+![ifvsgrfe](images/dnwell.png)
+you can check the commands ran to check the error.
+
+![ifvsgrfe](images/missing.png)
+
+error are resolved by putting the patches of nsubstratencontact
+![ifvsgrfe](images/patches.png)
+
+![ifvsgrfe](images/newpatch.png)
 
