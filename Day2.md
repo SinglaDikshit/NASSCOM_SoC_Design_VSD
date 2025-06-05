@@ -202,14 +202,12 @@ There 8 parameters to be noted-
 
 > Definition:
 >The time it takes for a change at the input of a gate to produce a corresponding change at the output.
+> Propogation delay is calculated as = time(out_x_thr) - (time_x_thr)
 
-Calculation (using threshold parameters):
+Rise delay: out_rise_thr - in_rise_thr
 
-> Rise Propagation Delay (tpdr):
-Time taken for the output to rise from `slew_low_rise_thr` to `slew_high_rise_thr`.
+Fall delay: out_fall_thr - in_fall_thr
 
- > Fall Propagation Delay (tpdf):
-Time taken for the output to fall from `slew_high_fall_thr` to `slew_low_fall_thr`.
 
  If the propagation delay is negative, it can cause quite unexpected results - as an output is generated before the input. Hence, threshhold values should be selected properly. Delay threshold is usually 50% and slew rate threshold is usually 20%-80%.
 
@@ -219,10 +217,14 @@ Time taken for the output to fall from `slew_high_fall_thr` to `slew_low_fall_th
 
 > Definition:
 > The time it takes for a signal to transition from low to high (rise time) or high to low (fall time).
+> Transition time is calculated as = time(slew_high_x_thr) - time(slew_low_x_thr)
 
-Rise delay: out_rise_thr - in_rise_thr
 
-Fall delay: out_fall_thr - in_fall_thr
+Time taken for the output to rise from `slew_low_rise_thr` to `slew_high_rise_thr`.
+
+Time taken for the output to fall from `slew_high_fall_thr` to `slew_low_fall_thr`.
+
+
 
 
 
