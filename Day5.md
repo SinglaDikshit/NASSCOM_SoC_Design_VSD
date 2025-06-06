@@ -98,12 +98,27 @@ To resolve:
 ![greger](images/signalshort.png)
 ![greger](images/drclean.png)
 
+## Power Distribution Network and Routing
 
+Go to the openlane directory
 
+Enter the command docker and then ./flow.tcl -interactive . To subsequently get the openlane package, type package require openlane 0.9.
 
+Then prep the design using -: **prep -design picorv32a -tag [folder name of run where in cts had been done]
 
+Then type echo $::env(CURRENT_DEF) /openLANE_flow/designs/picorv32a/runs/[folder name of run where in cts had been done]/results/cts/picorv32a.cts.def
 
+Then, type this to generate the PDN -: gen_pdn
 
+![greger](images/pdngen.png)
+
+The power and ground rails have a pitch of 2.72µm and hence the custom inverter cell also has a height of 2.72µm. This is as otherwise power and ground rails will not be able to power the cell. We also see that looking at the LEF file runs/[date]/tmp/merged.lef, all cells are have height of 2.72µm and only their width differs.
+
+![greger](images/new-merged-lef.png)
+
+It is shown below how standard cells are powered up :- power/ground pads -> power/ground ring-> power/ground straps -> power/ground rails
+
+![greger](images/soc.png)
 
 
 ## Basics of Global and Detail Routing and Configure TritonRoute
@@ -185,23 +200,32 @@ After executing the `run_routing` command:
   - Duration: Typically takes **20 to 30 minutes**
 ![greger](images/slide6.png)
 
+## Routing process
 
+If we forget where we were in the flowthen we can check the previous def by the command `echo $::env(CURRENT_DEF)`
 
+![greger](images/run_route.png)
 
+below we can see we got addspacers.def after successful routing.
+![greger](images/route-suuc.png)
 
+We can check the processes running by the command `top`, in `openlane/scripts/openroad` can be checked down-
+![greger](images/mytop.png)
+If we got error, or we want to kill something then we can use.
 
+this is a kill error, encountered by instructor-
+![greger](images/kill.png)
 
-![greger](images/routed.png)
+these are terminal snapshots
+![greger](images/commanda.png)
 
-![greger](images/routed.png)
+![greger](images/commanding.png)
 
-![greger](images/routed.png)
+The last stage will be to extract the GDSII file ready for fabrication run_magic
 
-![greger](images/routed.png)
+This uses Magic to stream the GDSII file runs/02-06_13-52/results/magic/picorv32a.gds. This GDSII file can then be read by Magic:
 
-![greger](images/routed.png)
-
-
+The last stage is to extract the GDSII file ready for fabrication through run_magic. This uses MAGIC to stream the GDSII file runs/26-03_05-49/results/magic/picorv32a.gds.
 
 
 
