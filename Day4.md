@@ -100,6 +100,44 @@ After this, invoke the docker command and prepare the picorv32a design. Then, ru
 ![dwefwefwev](images/synth-succ.png)
 in the above picture, we can observe - 1. chip area = 147712.9  2. tns = -711.59  3. wns = 23.89  4. successful synthesis.
 
+![dwefwefwev](images/new-merged-lef.png)
+
+## Next steps were to configure OpenSTA for post-synth timing analysis
+
+We have do STA on the picorv32a design which had timing violations.First we will run the synthesis using the following commands in openlane directory
+
+` docker
+./flow.tcl -interactive
+package require openlane 0.9
+prep -design picorv32a
+set lefs [glob $::env(DESIGN_DIR)/src/*.lef]
+add_lefs -src $lefs
+set ::env(SYNTH_SIZING) 1
+run_synthesis `
+
+Now we have to make a new pre_sta.conf file. We can do this by vim editor or in simple text editor also.
+
+Now we will create a my_base.sdc file which will have the definitions of environment variables. It is present in src folder in picorv32a.
+
+Now will go to the openlane directory in a new terminal and execute the sta pre_sta.conf command.
+
+I got confused here some of the steps therefore some of the things were not done properly and i dont have screenshots.
+
+![dwefwefwev](images/cells.png)
+
+![dwefwefwev](images/slack.png)
+
+
+![dwefwefwev](images/synth-succ.png)
+
+
+
+
+
+
+
+
+
 ## Delay Table
 
 In case of AND gate, ONLY when the enable pin is equal to 1, the CLK propagates to Y. Similarly, in case of OR gate, the CLK propogates to Y only when the enable pin is 0. Whenever the enable pin is equal to 1, the CLK does not propogate and there is no short circuit power consumption. Switching power consumption when such elemements are used is used in CLOCK TREE. This method is known as **Clock Gating Technique**.
