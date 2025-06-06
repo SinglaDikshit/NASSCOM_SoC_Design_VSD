@@ -244,15 +244,22 @@ For example, the command run_cts is found in the location /OpenLane/scripts/tcl_
 The aim is to analyse the clock tree explained previously. The steps for analysis of timings with real clocks are -:
 
 Enter into OpenROAD using the openroad command.
-NOTE: In OpenROAD, timing is done slightly differently, where in a db is created from lef and def files and subsequently used
 
 Subsequently create the db file through this command -: *read_lef [location of merged.lef]
 
+Then, we must read the def file from the CTS stage
+
+create the db through this command -: write_db pico_cts.db
+
+Then, read the db, verilog files, library and sdc
+
+After this, set the propogated clock to calculate the actual delay in the clock path through the command -: set_propogated_clock [all_clocks]
+
 ![dwefwefwev](images/openroaddb.png)
 
-![dwefwefwev](images/openroadfail.png)
+TritonCTS is build to optimise only based on one corner. However, the libraries included previously that also take part in timing analysis optimise based on both min and max corners, which is not accurate. Hence, we need to exit and re-enter OpenROAD and then check timing only for typical corner.
 
-Follow the above steps and mine flow is not working but the commands can be observed to implement it.
+![dwefwefwev](images/openroadfail.png)
 
 
 
