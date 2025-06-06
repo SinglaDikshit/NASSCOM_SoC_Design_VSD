@@ -218,11 +218,17 @@ After the previous step, OpenLANE will take the procedures from /Desktop/work/to
 
 ![dwefwefwev](images/scripts.png)
 
+![dwefwefwev](images/cts_succ.png)
+
+
 For example, the command run_cts is found in the location /OpenLane/scripts/tcl_commands/cts.tcl. This tcl process will invoke OpenROAD which will call the cts.tcl which contains the OpenROAD commands for TritonCTS.
+
+
+![dwefwefwev](images/or_cts_tcl.png)
 
 ![dwefwefwev](images/buffer.png)
 
-![dwefwefwev](images/max-cap.png)
+![dwefwefwev](images/max_cap.png)
 
 > The file contains many configuration variables for CTS like-:
 
@@ -235,19 +241,18 @@ For example, the command run_cts is found in the location /OpenLane/scripts/tcl_
 
 ### Lab Steps to Analyse Timing With Real Clocks Using OpenSTA
 
-![dwefwefwev](images/cts_succ.png)
+The aim is to analyse the clock tree explained previously. The steps for analysis of timings with real clocks are -:
 
-![dwefwefwev](images/or_cts_tcl.png)
+Enter into OpenROAD using the openroad command.
+NOTE: In OpenROAD, timing is done slightly differently, where in a db is created from lef and def files and subsequently used
+
+Subsequently create the db file through this command -: *read_lef [location of merged.lef]
 
 ![dwefwefwev](images/openroaddb.png)
 
 ![dwefwefwev](images/openroadfail.png)
 
-
-
-
-![dwefwefwev](images/synth-succ.png)
-
+Follow the above steps and mine flow is not working but the commands can be observed to implement it.
 
 
 
