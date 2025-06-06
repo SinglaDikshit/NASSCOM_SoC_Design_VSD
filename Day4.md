@@ -102,13 +102,157 @@ in the above picture, we can observe - 1. chip area = 147712.9  2. tns = -711.59
 
 ## Delay Table
 
-![dwefwefwev](images/gridhelp.png)
+In case of AND gate, ONLY when the enable pin is equal to 1, the CLK propagates to Y. Similarly, in case of OR gate, the CLK propogates to Y only when the enable pin is 0. Whenever the enable pin is equal to 1, the CLK does not propogate and there is no short circuit power consumption. Switching power consumption when such elemements are used is used in CLOCK TREE. This method is known as **Clock Gating Technique**.
 
-![dwefwefwev](images/gridhelp.png)
+![dwefwefwev](images/delaytable.png)
 
-![dwefwefwev](images/gridhelp.png)
+We see through the above picture that buffers on different levels have different capacitive loads and buffer sizes but as long as they have the same loads and sizes in the same level, the total delay for each clock tree path will be the same and, so skew will remain zero. However, we can observe that practically, different levels can have varying input transition and output capacitive load and hence varying delay.
 
-![dwefwefwev](images/gridhelp.png)
+We use delay tables to observe each cell's timing models that is included inside the .lef files. The element that majorly impacts delay is output slew, which depends on capacitative load and the input slew [which is a function of previous stage buffer's output capacitive load and input slew and has its own transition delay table.]
+
+We notice at level 2 that both buffers have identical delays due to equal transition times, load capacitances and buffers sizes. Observe that the skew is zero. If this is not true, the skew will be negative, which will cause timing violations. On a small scale, these are often considered to be insignificant but we see their importance in large designs which millions of cells, where in if we fail to adhere to guidelines during clock tree creation, many timing-related complications can be caused.
+
+CTS is the process of designing a clock distribution network to minimize skew and ensure synchronous operation of the circuit
+
+Skew refers to the variation in clock signal arrival times, and slew [rate] is the rate of change of signal's voltage on time
+
+Latency is the delay experienced by the clock signal
+
+
+
+
+
+
+
+
+
+
+
+
+## Timing Analysis With Ideal Clocks Using Open STA
+
+Consider an ideal clock where perform timing analysis to understand the parameters [Clock frequncy (F) is 1GHz and clock period (T) is 1ns]. -:
+
+The setup timing analysis equation is = Θ < T - S
+
+Θ = Combinational delay which includes clk to Q delay of launch flop and internal propagation delay of all gates between launch and capture flop
+
+T = Time period, also called the required time
+
+S = Setup time. Signal must settle on the middle (input of Mux 2) before clock tansists to 1 so the delay due to Mux 1 must be considered, this delay is the setup time.
+
+![dwefwefwev](images/setuptime.png)
+
+CLK signals are sent to the device by the PLL (Phase Locked Loop). This clock source is expected to send clock signal at 0, T, 2T etc. However, even these clock sources might or might not be able to provide a clock exactly at Tns because of its own in-built variation known as **jitter**. Jitter can be thought of as short-term fluctuations in the timing of signal transitions, which can result in deviations from the expected clock or data timing.
+
+![dwefwefwev](images/jitter.png)
+
+Now, we see that a new equation for setup time is = `Θ < T - S - SU`
+
+SU = Setup uncertainty due to jitter which is temporary variation of clock period, which is due to non-idealities of PLL.
+
+![dwefwefwev](images/thete.png)
+
+### Clock Tree Routing and Buffering Using H-Tree Algorithm
+
+In the context of digital design, **clock skew** refers to the difference in the arrival time of the clock signal at different flip-flops. 
+
+Let’s consider a `CLK` port connecting to various flip-flops in a digital system. the clock signal has been routed arbitrarily, causing:
+
+- Arrival time at flip-flop 1: `t1`
+- Arrival time at flip-flop 2: `t2`
+
+If `t2 > t1`, the **skew** is defined as:
+
+Skew = t2 - t1
+
+Clock skew can arise due to:
+
+- 📏 **Differences in wire lengths**
+- 🛣️ **Variations in routing paths**
+- ⚡ **Buffer delay inconsistencies**
+- 🌡️ **Physical/environmental factors (e.g., temperature, voltage)**
+
+This can result in parts of the system receiving the clock signal earlier or later than others.
+
+> **Note:** *Ideally, the clock skew should be **zero***.
+
+Reducing clock skew is critical to:
+
+- ✅ Ensure proper **signal synchronization**
+- ✅ Guarantee **reliable circuit operation**
+
+![dwefwefwev](images/htree.png)
+
+To solve this, we use **H-Tree routing**, an approach designed to balance the clock signal delivery:
+
+1. Calculate distances from the clock source to all endpoints.
+2. Determine a **central point** to begin tree construction.
+3. Split the route symmetrically by creating **midpoints**.
+4. Repeat the process recursively until all flip-flops are reached.
+
+This helps ensure the clock reaches all endpoints **at nearly the same time**, minimizing skew.
+
+#### 🔌 Clock Buffers / Repeaters
+
+- Maintain **signal strength** across long routes.
+- Ensure **timing accuracy**.
+
+### 🆚 Clock Buffers vs. Data Buffers
+
+| Parameter           | Clock Buffers          | Data Buffers           |
+|---------------------|------------------------|------------------------|
+| Rise/Fall Time      | **Equal**              | **Can differ**         |
+| Purpose             | Uniform propagation    | Data-specific behavior |
+
+![dwefwefwev](images/clocktree.png)
+
+Clock nets are **critical** and highly sensitive. One major threat is **crosstalk**:
+
+#### ⚠️ What is Crosstalk?
+
+When a signal in one net (**aggressor**) interferes with an adjacent net (**victim**) due to **high coupling capacitance**, it causes:
+
+1. **Glitches** (voltage dip in victim net)
+2. **Delta Delay** (unexpected timing delays)
+
+This leads to:
+- Incorrect memory values
+- Faulty circuit behavior
+
+![dwefwefwev](images/clocknet.png)
+
+#### 🛡️ Solution: Shielding Clock Nets
+
+- **Shielding** breaks the coupling between aggressor and victim nets.
+- Shielding wires are connected to **VDD or VSS**, which **do not switch**.
+- As a result, the victim net remains unaffected.
+
+  ## Timing Analysis With Real Clocks Using Open STA
+
+  ![dwefwefwev](images/skew.png)
+
+> delta1 = launch flop clock network delay
+
+> delta2 = capture flop clock delay
+
+Any design satisfying Slack [i.e. Data required time - Data arrival time] is ready to work in the given frequency. However, if this equation is violated, then slack will become negative which is not expected. We expect slack to be either zero or positive.
+
+![dwefwefwev](images/example.png)
+
+### Hold Timing Analysis Using Real Clocks
+Hold Time is delay [time] needed by the MUX2 model within a flip-flop to transfer certain data outside. [i.e. how long it holds the data]. It is the time period during which the launch flop must retain data before it reaches the capture flop. Unlike setup analysis, which has two rising clock edges, hold analysis occurs on the same rising clock edge for both the launch and capture flops.
+
+A hold violation occurs when the path is too fast, impacted by factors such as -:
+
+ - combinational delay
+ - clock buffer delays
+ - hold time.
+Notably, parameters such as time period and setup uncertainty hold no significance, as both launch and capture flops receive identical rising clock edges during hold analysis.
+
+![dwefwefwev](images/holdtime.png)
+
+
 
 
 
