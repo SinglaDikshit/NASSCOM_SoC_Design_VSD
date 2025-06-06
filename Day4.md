@@ -106,14 +106,14 @@ in the above picture, we can observe - 1. chip area = 147712.9  2. tns = -711.59
 
 We have do STA on the picorv32a design which had timing violations.First we will run the synthesis using the following commands in openlane directory
 
-` docker
-./flow.tcl -interactive
-package require openlane 0.9
-prep -design picorv32a
-set lefs [glob $::env(DESIGN_DIR)/src/*.lef]
-add_lefs -src $lefs
-set ::env(SYNTH_SIZING) 1
-run_synthesis `
+` docker`
+`./flow.tcl -interactive`
+`package require openlane 0.9 `
+`prep -design picorv32a`
+`set lefs [glob $::env(DESIGN_DIR)/src/*.lef]`
+`add_lefs -src $lefs `
+`set ::env(SYNTH_SIZING) 1 `
+`run_synthesis `
 
 Now we have to make a new pre_sta.conf file. We can do this by vim editor or in simple text editor also.
 
@@ -126,6 +126,124 @@ I got confused here some of the steps therefore some of the things were not done
 ![dwefwefwev](images/cells.png)
 
 ![dwefwefwev](images/slack.png)
+
+
+### Lab steps to configure synthesis settings to fix slack and include vsdinv
+
+We will try to modify the parameters of our cell by referring the README.md file in the configuration folder in openlane directory
+
+We will give the following commmands in the terminal in openlane directory
+
+`prep -design picorv32a -tag 01-04_12-54 -overwrite`
+
+`echo $::env(SYNTH_STRATEGY)`
+
+`set ::env(SYNTH_STRATEGY) "AREA 0"
+
+`echo $::env(SYNTH_BUFFERING)`
+
+`echo $::env(SYNTH_SIZING)`
+
+`set ::env(SYNTH_SIZING) 1`
+
+`echo $::env(SYNTH_DRIVING_CELL)`
+
+`run_synthesis`
+
+prep -design picorv32a -tag 01-04_12-54 -overwrite is used to overwrite the existing files with previous values of simulations.
+
+After synthesis, we have observed that the slack is nagative.
+
+wns(worst negative slack)= -16
+
+tns(total negative slack)= -385
+
+![dwefwefwev](images/slack0.png)
+
+I will have to do run_floorplan
+
+![dwefwefwev](images/floorfail.png)
+
+![dwefwefwev](images/error-floorplan.png)
+
+Due to the error the i am not able to take magic layout. But the way to resolve this is, we will use the following commands to do the floorplan,
+
+`init_floorplan`
+
+`place_io`
+
+`tap_decap_or`
+
+Now i have done run_placement
+
+![dwefwefwev](images/succ-placement.png)
+
+Now we have to make a new pre_sta.conf file. We can do this by vim editor or in simple text editor also.
+
+Now we will create a my_base.sdc file which will have the definitions of environment variables.
+
+Now, we also need to create my_base.sdc file having the data shown in below image in openlane/designs/picorv32a/src directory
+
+The various commands to be run and their functions are -:
+
+`create_clock` -it creates clock for the port with specified time period.
+
+`set_input_delay` and `set_output_delay` - defines the arrival/exit time of an input/output signal relative to the input clock. [This is the delay of the signal coming from an external block and internal delay of the signal to be propagated to external ports] This adds a delay of Xns relative to clk to all signals going to input ports, and delay of Yns relative to CLK to all signals going to output ports.
+
+`set_max_fanout` - specifies maximum fanout count for all output ports in the design.
+
+`set_driving_cell` - models an external driver at the input port of the current design.
+
+`set_load` sets a capacitive load to all output ports.
+
+Execute sta pre_sta.conf and check timing.
+
+### Lab steps to do basic timing ECO
+
+we can follow the below commands of replace-
+
+![dwefwefwev](images/replace.png)
+
+Now we need to replace the old netlist with newly generated netlist which has generated after reducing the slack. And then we will run floorplan , placement and CTS.
+
+So, we need to make a copy of this old netlist and then we will add the newly generated netlist to be used in our openlane flow for further process.
+
+Now we will do synthesis again then floorplan , placement and cts in the openlane directory.
+
+![dwefwefwev](images/run_cts.png)
+
+### Lab Steps to Verify CTS Runs
+
+After the previous step, OpenLANE will take the procedures from /Desktop/work/tools/openlane_working_dir/openlane/scripts/tcl_commands and eventually invoke OpenROAD to run the tools.
+
+![dwefwefwev](images/scripts.png)
+
+For example, the command run_cts is found in the location /OpenLane/scripts/tcl_commands/cts.tcl. This tcl process will invoke OpenROAD which will call the cts.tcl which contains the OpenROAD commands for TritonCTS.
+
+![dwefwefwev](images/buffer.png)
+
+![dwefwefwev](images/max-cap.png)
+
+> The file contains many configuration variables for CTS like-:
+
+> CTS_CLK_BUFFER_LIST -> which has the list of clock buffers used in clock tree branches (sky130_fd_sc_hd__clkbuf_1 sky130_fd_sc_hd__clkbuf_2 sky130_fd_sc_hd__clkbuf_4 sky130_fd_sc_hd__clkbuf_8)
+> 
+> CTS_ROOT_BUFFER -> this is the clock buffer used for the root of the clock tree and is the biggest clock buffer to drive the clock tree of the whole chip (sky130_fd_sc_hd__clkbuf_16)
+> 
+> CTS_MAX_CAP -> it is a numerical value for the maximum capacitance of the output port of the root clock buffer
+
+
+### Lab Steps to Analyse Timing With Real Clocks Using OpenSTA
+
+![dwefwefwev](images/cts_succ.png)
+
+![dwefwefwev](images/or_cts_tcl.png)
+
+![dwefwefwev](images/openroaddb.png)
+
+![dwefwefwev](images/openroadfail.png)
+
+
 
 
 ![dwefwefwev](images/synth-succ.png)
