@@ -75,8 +75,10 @@ All configurations/switches accepted by the current run are from openlane/design
 
 It is important to note the order of priority among the files when flow decides to take value of variable-
 
-1.openlane/designs/[design-date]/sky130A_sky130_fd_sc_hd_config.tcl
+1.openlane/designs/[design]/sky130A_sky130_fd_sc_hd_config.tcl
+
 2.openlane/designs/[design]/config.tcl
+
 3.openlane/configuration/floorplan.tcl 
 
 Below we can see floorplan.tcl iin configurations directory
