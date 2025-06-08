@@ -92,7 +92,7 @@ Floorplan is to be run on OpenLANE through the command :- run_floorplan
 After running floorplan as above, it will produce a result that will be stored in the form of a design exchange format - and will contain the area of the Die as well as positions.
 ![SoC_layout](images/floorplandef.png)
 
-<!-- The die area in this file is in database units and 1 micron is equivalent to 1000 database units. Area of die = (554570/1000) microns * (565290/1000) microns = 311829.1653 sq. µm -->
+The die area in this file is in database units and 1 micron is equivalent to 1000 database units. Area of die = (660685/1000) microns * (671405/1000) microns = 443587.2124 sq. µm
 
 ### Review Floorplan Layout in Magic
 
