@@ -121,6 +121,36 @@ Before a design is sent for fabrication, it undergoes several critical verificat
 
 3. Static Timing Analysis (STA): Analyzes all timing paths in the circuit to ensure that setup and hold times are met, and that the design can operate correctly at the target clock frequency.
 
+> Synthesis
+
+*   Generating gate-level netlist (yosys).
+*   Performing cell mapping (abc).
+*   Performing pre-layout STA (OpenSTA).
+
+> Floorplanning
+
+*   Defining the core area for the macro as well as the cell sites and the tracks (init_fp).
+*   Placing the macro input and output ports (ioplacer).
+*   Generating the power distribution network (pdn).
+
+> Placement
+
+*   Performing global placement (RePLace).
+*   Perfroming detailed placement to legalize the globally placed components (OpenDP).
+
+> Clock Tree Synthesis (CTS)
+
+*   Synthesizing the clock tree (TritonCTS).
+
+> Routing
+
+*   Performing global routing to generate a guide file for the detailed router (FastRoute).
+*   Performing detailed routing (TritonRoute)
+
+> GDSII Generation
+
+*   Streaming out the final GDSII layout file from the routed def (Magic)
+
 ## Introduction to OpenLANE and Strive Chipsets
 
 ![machine_concept](images/Strive.png)
