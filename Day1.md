@@ -189,6 +189,12 @@ We can see designs directory have many designs and I have worked with picorv32a.
 
 ![machine_concept](images/commands1.png)
 
+PicoRV32 is a CPU core that implements the RISC-V RV32IMC Instruction Set. It can be configured as RV32I, RV32IC, RV32IM, or RV32IMC core; where the suffixes stand for:
+
+M - Multiply extension
+I - Base Integer Instructions
+C - Compressed Instructions
+
 Insdie picorv32a we have three main directories - 
 1. src - which contain .sdc and verilog file.
 2. config.tcl
