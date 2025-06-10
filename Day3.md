@@ -21,6 +21,20 @@ In the later case, graph's intersection with Vin = Vout is at the center (~1.2) 
 The similarity in the shapes of input-output voltage graphs indicates that CMOS is a robust technology. Two key parameters that determine this robustness are the **switching threshold and propagation delay**.
 
 The switching threshold is the point at which the input voltage equals the output voltage. At this point, both the PMOS and NMOS transistors are in saturation, and simultaneously conducting. This condition increases the risk of short-circuit current, as a direct path may form from VDD to GND, leading to leakage power and potential reliability issues.
+---
+> 📌 Why Switching Voltage Should Be Midway of Max Voltage
+> 
+> Setting the switching voltage (threshold voltage) at the midpoint of the supply voltage (e.g. VDD/2) ensures:
+>
+> Maximum noise margins for both logic 0 and 1
+>
+> Balanced rise and fall times in CMOS logic
+>
+> Symmetric voltage transfer characteristics
+>
+> Improved reliability and performance of digital circuits
+>
+> This midpoint ensures the circuit resists noise and transitions cleanly between logic levels
 
 ![ifvsgrfe](images/wl.png)
 
