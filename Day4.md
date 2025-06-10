@@ -77,7 +77,7 @@ The minimal and abstracted information like pin position,PR boundary is provided
 
 > Cell LEF - It's an abstract view of the cell and only gives information about PR boundary, pin position and metal layer information of the cell.
 > 
-> Technology LEF - It contains information about available metal layer, via information, DRCs of particular technology used by placer and router etc.. The below diagram highlights the difference between a layout > and a LEF (Image Courtesy: Google):
+> Technology LEF - It contains information about available metal layer, via information, DRCs of particular technology used by placer and router etc.
 
 LEF [Library Exchange Format] which contains information of the standard cell library used in the design. The instructions to set the port definitions are available on vsdstdcelldesign github repo. Next, save the .mag file with a new filename by typing `lef write` in the tkcon terminal, which will generate a new lef file with the new filename 
 
