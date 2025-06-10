@@ -231,6 +231,31 @@ CMOS fabrication integrates NMOS and PMOS transistors on a single chip through a
   - **Mask-8:** Lightly doped P- (PMOS)
 - Add **SiO₂ spacers** with anisotropic etching
 
+
+#### ✅ Crux
+
+**LDD reduces electric field near the drain to prevent hot carrier degradation in short-channel MOSFETs.**
+
+#### 🔍 Problem Without LDD
+
+In advanced CMOS nodes (submicron technologies):
+
+- **Shorter channel lengths** mean higher electric fields near the drain.
+- When a transistor switches, **high-energy electrons ("hot carriers")** can:
+  - Gain enough energy to **break Si–SiO₂ bonds**
+  - **Inject into the gate oxide**, damaging it
+  - Cause **threshold voltage shifts**, **mobility degradation**, and **long-term reliability issues**
+
+---
+
+#### 🛠️ LDD Structure Solution
+
+To mitigate this:
+
+- **A lightly doped N⁻ (or P⁻) region** is placed between the channel and the heavily doped N⁺ (or P⁺) drain.
+- This **gradually spreads** the electric field instead of concentrating it.
+- Result: lower peak electric field → **less hot carrier injection**
+
 ---
 
 ### ✅ **5. Source & Drain Formation**
